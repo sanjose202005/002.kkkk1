@@ -1,0 +1,13 @@
+# listening address of transocks.
+listen = "127.0.0.1:22224"    # default is "localhost:1081"
+
+#proxy_url = "socks5://10.20.30.40:1080"  # for SOCKS5 server
+#proxy_url = "http://10.20.30.40:3128"   # for HTTP proxy server
+#proxy_url = "socks5://114.55.63.81:1080"  
+proxy_url = "socks5://114.99.2.150:38801"
+
+[log]
+#filename = "/path/to/file"   # default to stderr
+filename = "/tmp/log.h12w_socks.txt"   # default to stderr
+level = "info"               # critical", error, warning, info, debug
+format = "json"              # plain, logfmt, json
