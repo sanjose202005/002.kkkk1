@@ -1,6 +1,4 @@
-src1:=valuga
-src2:=https_baidu
-src3:=httpproxy
+srcS:=valuga https_baidu httpproxy http_fileserver
 
 
 define helpText

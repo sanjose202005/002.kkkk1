@@ -1,0 +1,19 @@
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintf(w, "Welcome to my website!")
+    })
+
+    //fs := http.FileServer(http.Dir("static/"))
+    fs := http.FileServer(http.Dir("info/"))
+    http.Handle("/static/", http.StripPrefix("/static/", fs))
+    //http.Handle("/info/", http.StripPrefix("/info/", fs))
+
+    http.ListenAndServe(":30080", nil)
+}
