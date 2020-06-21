@@ -24,8 +24,10 @@ all:
 
 m:
 	vim Makefile
+
 gs:
 	git status
+
 gc:
 	git commit -a
 
