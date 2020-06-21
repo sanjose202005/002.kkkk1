@@ -10,16 +10,16 @@ import (
     "strings"
 )
 
-type Pxy struct {
-    Cfg Cfg
+type _TS_proxy struct {
+    _TS_cfg _TS_cfg
 }
 
 // 设置type
-type Cfg struct {
-    Addr        string   // 监听地址
-    Port        string   // 监听端口
-    IsAnonymous bool     // 高匿名模式
-    Debug       bool     // 调试模式
+type _TS_cfg struct {
+    _Addr        string   // 监听地址
+    _Port        string   // 监听端口
+    _IsAnonymous bool     // 高匿名模式
+    _Debug       bool     // 调试模式
 }
 
 func main() {
@@ -31,58 +31,58 @@ func main() {
     fdebug :=  flag.Bool("debug",false,"调试模式显示更多信息，默认关闭")
     flag.Parse()
 
-    cfg := &Cfg{}
-    cfg.Addr = *faddr
-    cfg.Port = *fprot
-    cfg.IsAnonymous = *fanonymous
-    cfg.Debug = *fdebug
+    cfg := &_TS_cfg{}
+    cfg._Addr = *faddr
+    cfg._Port = *fprot
+    cfg._IsAnonymous = *fanonymous
+    cfg._Debug = *fdebug
     // fmt.Println(cfg)
     Run(cfg)
 }
 
-func Run(cfg *Cfg) {
+func Run(cfg *_TS_cfg) {
     pxy := NewPxy()
     pxy.SetPxyCfg(cfg)
-    log.Printf("HttpPxoy is runing on %s:%s \n", cfg.Addr, cfg.Port)
+    log.Printf("HttpPxoy is runing on %s:%s \n", cfg._Addr, cfg._Port)
     // http.Handle("/", pxy)
-    bindAddr := cfg.Addr + ":" + cfg.Port
+    bindAddr := cfg._Addr + ":" + cfg._Port
     log.Fatalln(http.ListenAndServe(bindAddr, pxy))
 }
 
 
 // 实例化
-func NewPxy() *Pxy {
-    return &Pxy{
-        Cfg: Cfg{
-            Addr:        "",
-            Port:        "22221",
-            IsAnonymous: true,
-            Debug:       false,
+func NewPxy() *_TS_proxy {
+    return &_TS_proxy{
+        _TS_cfg: _TS_cfg{
+            _Addr:        "",
+            _Port:        "22221",
+            _IsAnonymous: true,
+            _Debug:       false,
         },
     }
 }
 
 // 配置参数
-func (p *Pxy) SetPxyCfg(cfg *Cfg) {
-    if cfg.Addr != "" {
-        p.Cfg.Addr = cfg.Addr
+func (___p1 *_TS_proxy) SetPxyCfg(cfg *_TS_cfg) {
+    if cfg._Addr != "" {
+        ___p1._TS_cfg._Addr = cfg._Addr
     }
-    if cfg.Port != "" {
-        p.Cfg.Port = cfg.Port
+    if cfg._Port != "" {
+        ___p1._TS_cfg._Port = cfg._Port
     }
-    if cfg.IsAnonymous != p.Cfg.IsAnonymous {
-        p.Cfg.IsAnonymous = cfg.IsAnonymous
+    if cfg._IsAnonymous != ___p1._TS_cfg._IsAnonymous {
+        ___p1._TS_cfg._IsAnonymous = cfg._IsAnonymous
     }
-    if cfg.Debug != p.Cfg.Debug {
-        p.Cfg.Debug = cfg.Debug
+    if cfg._Debug != ___p1._TS_cfg._Debug {
+        ___p1._TS_cfg._Debug = cfg._Debug
     }
 
 }
 
 // 运行代理服务
-func (p *Pxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+func (___p2 *_TS_proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
     // debug
-    if p.Cfg.Debug {
+    if ___p2._TS_cfg._Debug {
         log.Printf("Received request %s %s %s\n", req.Method, req.Host, req.RemoteAddr)
         // fmt.Println(req)
     }
@@ -90,17 +90,17 @@ func (p *Pxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
     // http && https
     if req.Method != "CONNECT" {
         // 处理http
-        p.HTTP(rw, req)
+        ___p2.http_deal_with(rw, req)
     } else {
         // 处理https
         // 直通模式不做任何中间处理
-        p.HTTPS(rw, req)
+        ___p2.httpS_deal_with(rw, req)
     }
 
 }
 
 // http
-func (p *Pxy) HTTP(rw http.ResponseWriter, req *http.Request) {
+func (___p3 *_TS_proxy) http_deal_with(rw http.ResponseWriter, req *http.Request) {
 
     transport := http.DefaultTransport
 
@@ -110,7 +110,7 @@ func (p *Pxy) HTTP(rw http.ResponseWriter, req *http.Request) {
     *outReq = *req // 复制请求
 
     //  处理匿名代理
-    if p.Cfg.IsAnonymous == false {
+    if ___p3._TS_cfg._IsAnonymous == false {
         if clientIP, _, err := net.SplitHostPort(req.RemoteAddr); err == nil {
             if prior, ok := outReq.Header["X-Forwarded-For"]; ok {
                 clientIP = strings.Join(prior, ", ") + ", " + clientIP
@@ -142,7 +142,7 @@ func (p *Pxy) HTTP(rw http.ResponseWriter, req *http.Request) {
 
 
 // https
-func (p *Pxy) HTTPS(rw http.ResponseWriter, req *http.Request) {
+func (___p4 *_TS_proxy) httpS_deal_with(rw http.ResponseWriter, req *http.Request) {
 
     // 拿出host
     host := req.URL.Host
