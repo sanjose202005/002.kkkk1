@@ -2,7 +2,7 @@
 CFGmakeRun:=Makefile.run.go01.mk
 
 GoTOP:=\
-	httpproxy
+	httpproxy2
 
-httpproxy := \
-	httpproxy
+httpproxy2 := \
+	httpproxy2
