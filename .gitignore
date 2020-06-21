@@ -21,3 +21,5 @@ bin.*.bin
 /bin/
 
 [0-9].txt
+/tags
+/_vim/cscope.in?
