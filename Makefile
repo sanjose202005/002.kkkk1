@@ -29,6 +29,9 @@ gs:
 gc:
 	git commit -a
 
+ga:
+	git add .
+
 r1 v1 b1 d1: src:=$(src1)
 r2 v2 b2 d2: src:=$(src2)
 r3 v3 b3 d3: src:=$(src3)
