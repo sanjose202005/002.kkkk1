@@ -54,6 +54,7 @@ var _vHandle01 =  _TS_proxy{
 };
 
 var _vHandle02 =  _TS_proxy{}
+var _vUint6401  uint64
 
 var _vWait      sync.WaitGroup
 

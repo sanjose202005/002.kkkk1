@@ -12,7 +12,7 @@ import (
     //"strconv"
     //"os"
     //"sync"
-    //"sync/atomic"
+    "sync/atomic"
     "time"
 )
 
@@ -41,7 +41,9 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
 //        if ___p3._vTS_cfg._vHttps {
 //            atomic . AddUint64(&___p3._vAccessF , 1)
 //        } else {
-//            atomic . AddUint64(&___p3._vAccessS , 1)
+            //atomic . AddUint64(&(___p3._vAccessS) , 1)
+            //atomic . AddUint64(&(_vHandle02._vAccessS) , 1)
+            atomic . AddUint64(&_vUint6401 , 1)
             // 处理http
             ___p3._http_deal_with(___rw3, ___req3)
 //        }
