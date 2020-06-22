@@ -13,7 +13,7 @@ import (
 
 
 // https
-func (___p4 *_TS_proxy) httpS_deal_with(rw http.ResponseWriter, req *http.Request) {
+func (___p4 *_TS_proxy) _httpS_deal_with(rw http.ResponseWriter, req *http.Request) {
 
     // 拿出host
     host := req.URL.Host

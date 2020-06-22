@@ -12,7 +12,7 @@ import (
 
 
 // http
-func (___p3 *_TS_proxy) http_deal_with(rw http.ResponseWriter, req *http.Request) {
+func (___p3 *_TS_proxy) _http_deal_with(rw http.ResponseWriter, req *http.Request) {
 
     transport := http.DefaultTransport
 

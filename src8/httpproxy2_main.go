@@ -25,33 +25,33 @@ type _TS_cfg struct {
 func main() {
 
     // 参数
-    faddr := flag.String("addr","0.0.0.0","监听地址，默认0.0.0.0")
-    fprot := flag.String("port","22220","监听端口，默认22220")
-    fanonymous :=  flag.Bool("anonymous",true,"高匿名，默认高匿名")
-    fdebug :=  flag.Bool("debug",false,"调试模式显示更多信息，默认关闭")
+    __faddr := flag.String("addr","0.0.0.0","监听地址，默认0.0.0.0")
+    __fprot := flag.String("port","22220","监听端口，默认22220")
+    __fanonymous :=  flag.Bool("anonymous",true,"高匿名，默认高匿名")
+    __fdebug :=  flag.Bool("debug",false,"调试模式显示更多信息，默认关闭")
     flag.Parse()
 
-    cfg := &_TS_cfg{}
-    cfg._Addr = *faddr
-    cfg._Port = *fprot
-    cfg._IsAnonymous = *fanonymous
-    cfg._Debug = *fdebug
-    // fmt.Println(cfg)
-    Run(cfg)
+    __cfg := &_TS_cfg{}
+    __cfg._Addr = *__faddr
+    __cfg._Port = *__fprot
+    __cfg._IsAnonymous = *__fanonymous
+    __cfg._Debug = *__fdebug
+    // fmt.Println(__cfg)
+    _Run(__cfg)
 }
 
-func Run(cfg *_TS_cfg) {
-    pxy := NewPxy()
-    pxy.SetPxyCfg(cfg)
-    log.Printf("HttpPxoy is runing on %s:%s \n", cfg._Addr, cfg._Port)
-    // http.Handle("/", pxy)
-    bindAddr := cfg._Addr + ":" + cfg._Port
-    log.Fatalln(http.ListenAndServe(bindAddr, pxy))
+func _Run(___cfg1 *_TS_cfg) {
+    __pxy := _NewPxy()
+    __pxy._SetPxyCfg(___cfg1)
+    log.Printf("HttpPxoy is runing on %s:%s \n", ___cfg1._Addr, ___cfg1._Port)
+    // http.Handle("/", __pxy)
+    __bindAddr := ___cfg1._Addr + ":" + ___cfg1._Port
+    log.Fatalln(http.ListenAndServe(__bindAddr, __pxy))
 }
 
 
 // 实例化
-func NewPxy() *_TS_proxy {
+func _NewPxy() *_TS_proxy {
     return &_TS_proxy{
         _TS_cfg: _TS_cfg{
             _Addr:        "",
@@ -63,38 +63,38 @@ func NewPxy() *_TS_proxy {
 }
 
 // 配置参数
-func (___p1 *_TS_proxy) SetPxyCfg(cfg *_TS_cfg) {
-    if cfg._Addr != "" {
-        ___p1._TS_cfg._Addr = cfg._Addr
+func (___p1 *_TS_proxy) _SetPxyCfg(___cfg2 *_TS_cfg) {
+    if ___cfg2._Addr != "" {
+        ___p1._TS_cfg._Addr = ___cfg2._Addr
     }
-    if cfg._Port != "" {
-        ___p1._TS_cfg._Port = cfg._Port
+    if ___cfg2._Port != "" {
+        ___p1._TS_cfg._Port = ___cfg2._Port
     }
-    if cfg._IsAnonymous != ___p1._TS_cfg._IsAnonymous {
-        ___p1._TS_cfg._IsAnonymous = cfg._IsAnonymous
+    if ___cfg2._IsAnonymous != ___p1._TS_cfg._IsAnonymous {
+        ___p1._TS_cfg._IsAnonymous = ___cfg2._IsAnonymous
     }
-    if cfg._Debug != ___p1._TS_cfg._Debug {
-        ___p1._TS_cfg._Debug = cfg._Debug
+    if ___cfg2._Debug != ___p1._TS_cfg._Debug {
+        ___p1._TS_cfg._Debug = ___cfg2._Debug
     }
 
 }
 
 // 运行代理服务
-func (___p2 *_TS_proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Request) {
     // debug
-    if ___p2._TS_cfg._Debug {
-        log.Printf("Received request %s %s %s\n", req.Method, req.Host, req.RemoteAddr)
-        // fmt.Println(req)
+    if ___p3._TS_cfg._Debug {
+        log.Printf("Received request %s %s %s\n", ___req3.Method, ___req3.Host, ___req3.RemoteAddr)
+        // fmt.Println(___req3)
     }
 
     // http && https
-    if req.Method != "CONNECT" {
+    if ___req3.Method != "CONNECT" {
         // 处理http
-        ___p2.http_deal_with(rw, req)
+        ___p3._http_deal_with(___rw3, ___req3)
     } else {
         // 处理https
         // 直通模式不做任何中间处理
-        ___p2.httpS_deal_with(rw, req)
+        ___p3._httpS_deal_with(___rw3, ___req3)
     }
 
 }
