@@ -22,7 +22,7 @@ func (___p3 *_TS_proxy) _http_deal_with(rw http.ResponseWriter, req *http.Reques
     *outReq = *req // 复制请求
 
     //  处理匿名代理
-    if ___p3._TS_cfg._IsAnonymous == false {
+    if ___p3._vTS_cfg._IsAnonymous == false {
         if clientIP, _, err := net.SplitHostPort(req.RemoteAddr); err == nil {
             if prior, ok := outReq.Header["X-Forwarded-For"]; ok {
                 clientIP = strings.Join(prior, ", ") + ", " + clientIP
