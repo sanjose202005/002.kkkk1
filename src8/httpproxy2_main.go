@@ -12,6 +12,7 @@ import (
     "strconv"
     "os"
     "sync"
+    "sync/atomic"
     "time"
 )
 
@@ -25,6 +26,8 @@ func ListenAndServe(addr string, handler Handler) error
 type _TS_proxy struct {
     _vTS_cfg    _TS_cfg
     _vListen    string // exampel : 0.0.0.0:22220
+    _vAccessS   uint64 // access 01 : open method : http/https : succeed
+    _vAccessF   uint64 // access 01 : open method : http/https : falied
     _vR01new    uint64
     _vR02deal   uint64
     _vW01new    uint64
@@ -110,12 +113,22 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
 
     // http && https
     if ___req3.Method != "CONNECT" {
-        // 处理http
-        ___p3._http_deal_with(___rw3, ___req3)
+        if ___p3._vTS_cfg._vHttps {
+            atomic . AddUint64(&___p3._vAccessF , 1)
+        } else {
+            atomic . AddUint64(&___p3._vAccessS , 1)
+            // 处理http
+            ___p3._http_deal_with(___rw3, ___req3)
+        }
     } else {
-        // 处理https
-        // 直通模式不做任何中间处理
-        ___p3._httpS_deal_with(___rw3, ___req3)
+        if ___p3._vTS_cfg._vHttps == false{
+            atomic . AddUint64(&___p3._vAccessF , 1)
+        } else {
+            atomic . AddUint64(&___p3._vAccessS , 1)
+            // 处理https
+            // 直通模式不做任何中间处理
+            ___p3._httpS_deal_with(___rw3, ___req3)
+        }
     }
 
 }
