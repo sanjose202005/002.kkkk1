@@ -12,44 +12,44 @@ import (
 
 
 // http
-func (___p3 *_TS_proxy) _http_deal_with(rw http.ResponseWriter, req *http.Request) {
+func (___p3 *_TS_proxy) _http_deal_with(___rw3 http.ResponseWriter, ___req3 *http.Request) {
 
-    transport := http.DefaultTransport
+    __transport := http.DefaultTransport
 
     // 新建一个请求outReq
-    outReq := new(http.Request)
+    __outReq := new(http.Request)
     // 复制客户端请求到outReq上
-    *outReq = *req // 复制请求
+    *__outReq = *___req3 // 复制请求
 
     //  处理匿名代理
     if ___p3._vTS_cfg._vIsAnonymous == false {
-        if clientIP, _, err := net.SplitHostPort(req.RemoteAddr); err == nil {
-            if prior, ok := outReq.Header["X-Forwarded-For"]; ok {
+        if clientIP, _, err := net.SplitHostPort(___req3.RemoteAddr); err == nil {
+            if prior, ok := __outReq.Header["X-Forwarded-For"]; ok {
                 clientIP = strings.Join(prior, ", ") + ", " + clientIP
             }
-            outReq.Header.Set("X-Forwarded-For", clientIP)
+            __outReq.Header.Set("X-Forwarded-For", clientIP)
         }
     }
 
     // outReq请求放到传送上
-    res, err := transport.RoundTrip(outReq)
+    __res, err := __transport.RoundTrip(__outReq)
     if err != nil {
-        rw.WriteHeader(http.StatusBadGateway)
-        rw.Write([]byte(err.Error()))
+        ___rw3.WriteHeader(http.StatusBadGateway)
+        ___rw3.Write([]byte(err.Error()))
         return
     }
 
     // 回写http头
-    for key, value := range res.Header {
+    for key, value := range __res.Header {
         for _, v := range value {
-            rw.Header().Add(key, v)
+            ___rw3.Header().Add(key, v)
         }
     }
     // 回写状态码
-    rw.WriteHeader(res.StatusCode)
+    ___rw3.WriteHeader(__res.StatusCode)
     // 回写body
-    io.Copy(rw, res.Body)
-    res.Body.Close()
+    io.Copy(___rw3, __res.Body)
+    __res.Body.Close()
 }
 
 

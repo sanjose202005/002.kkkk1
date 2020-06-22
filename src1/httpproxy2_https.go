@@ -13,29 +13,29 @@ import (
 
 
 // https
-func (___p4 *_TS_proxy) _httpS_deal_with(rw http.ResponseWriter, req *http.Request) {
+func (___p4 *_TS_proxy) _httpS_deal_with(___rw4 http.ResponseWriter, ___req4 *http.Request) {
 
     // 拿出host
-    host := req.URL.Host
-    hij, ok := rw.(http.Hijacker)
-    if !ok {
+    __host := ___req4.URL.Host
+    __hij, __ok := ___rw4.(http.Hijacker)
+    if !__ok {
         log.Printf("HTTP Server does not support hijacking")
     }
 
-    client, _, err := hij.Hijack()
-    if err != nil {
+    __client, _, __err41 := __hij.Hijack()
+    if __err41 != nil {
         return
     }
 
     // 连接远程
-    server, err := net.Dial("tcp", host)
-    if err != nil {
+    __server, __err42 := net.Dial("tcp", __host)
+    if __err42 != nil {
         return
     }
-    client.Write([]byte("HTTP/1.0 200 Connection Established\r\n\r\n"))
+    __client.Write([]byte("HTTP/1.0 200 Connection Established\r\n\r\n"))
 
     // 直通双向复制
-    go io.Copy(server, client)
-    go io.Copy(client, server)
+    go io.Copy(__server, __client)
+    go io.Copy(__client, __server)
 }
 
