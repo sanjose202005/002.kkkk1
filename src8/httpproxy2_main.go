@@ -23,18 +23,18 @@ type _TS_proxy struct {
 
 // 设置type
 type _TS_cfg struct {
-    _Addr        string   // 监听地址
-    _Port        string   // 监听端口
-    _IsAnonymous bool     // 高匿名模式
-    _Debug       bool     // 调试模式
+    _vAddr        string   // 监听地址
+    _vPort        string   // 监听端口
+    _vIsAnonymous bool     // 高匿名模式
+    _vDebug       bool     // 调试模式
 }
 
 var _vHandle01 =  _TS_proxy{
     _vTS_cfg: _TS_cfg{
-        _Addr:        "",
-        _Port:        "22221",
-        _IsAnonymous: true,
-        _Debug:       false,
+        _vAddr:        "",
+        _vPort:        "22221",
+        _vIsAnonymous: true,
+        _vDebug:       false,
     },
 };
 
@@ -51,10 +51,10 @@ func main() {
 
     //_vHandle01 .
     
-    __cfg._Addr = *__faddr
-    __cfg._Port = *__fprot
-    __cfg._IsAnonymous = *__fanonymous
-    __cfg._Debug = *__fdebug
+    __cfg._vAddr = *__faddr
+    __cfg._vPort = *__fprot
+    __cfg._vIsAnonymous = *__fanonymous
+    __cfg._vDebug = *__fdebug
     // fmt.Println(__cfg)
     
 
@@ -64,26 +64,26 @@ func main() {
 func _Run(___cfg1 *_TS_cfg) {
     __pxy := &_vHandle01 
     __pxy._SetPxyCfg(___cfg1)
-    log.Printf("HttpPxoy is runing on %s:%s \n", ___cfg1._Addr, ___cfg1._Port)
+    log.Printf("HttpPxoy is runing on %s:%s \n", ___cfg1._vAddr, ___cfg1._vPort)
     // http.Handle("/", __pxy)
-    __bindAddr := ___cfg1._Addr + ":" + ___cfg1._Port
+    __bindAddr := ___cfg1._vAddr + ":" + ___cfg1._vPort
     log.Fatalln(http.ListenAndServe(__bindAddr, __pxy))
 }
 
 
 // 配置参数
 func (___p1 *_TS_proxy) _SetPxyCfg(___cfg2 *_TS_cfg) {
-    if ___cfg2._Addr != "" {
-        ___p1._vTS_cfg._Addr = ___cfg2._Addr
+    if ___cfg2._vAddr != "" {
+        ___p1._vTS_cfg._vAddr = ___cfg2._vAddr
     }
-    if ___cfg2._Port != "" {
-        ___p1._vTS_cfg._Port = ___cfg2._Port
+    if ___cfg2._vPort != "" {
+        ___p1._vTS_cfg._vPort = ___cfg2._vPort
     }
-    if ___cfg2._IsAnonymous != ___p1._vTS_cfg._IsAnonymous {
-        ___p1._vTS_cfg._IsAnonymous = ___cfg2._IsAnonymous
+    if ___cfg2._vIsAnonymous != ___p1._vTS_cfg._vIsAnonymous {
+        ___p1._vTS_cfg._vIsAnonymous = ___cfg2._vIsAnonymous
     }
-    if ___cfg2._Debug != ___p1._vTS_cfg._Debug {
-        ___p1._vTS_cfg._Debug = ___cfg2._Debug
+    if ___cfg2._vDebug != ___p1._vTS_cfg._vDebug {
+        ___p1._vTS_cfg._vDebug = ___cfg2._vDebug
     }
 
 }
@@ -91,7 +91,7 @@ func (___p1 *_TS_proxy) _SetPxyCfg(___cfg2 *_TS_cfg) {
 // 运行代理服务 xxx
 func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Request) {
     // debug
-    if ___p3._vTS_cfg._Debug {
+    if ___p3._vTS_cfg._vDebug {
         log.Printf("Received request %s %s %s\n", ___req3.Method, ___req3.Host, ___req3.RemoteAddr)
         // fmt.Println(___req3)
     }
