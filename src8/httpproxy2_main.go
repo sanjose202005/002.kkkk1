@@ -3,12 +3,19 @@ package main
 
 import (
     "flag"
-//    "io"
+    //    "io"
     "log"
-//    "net"
+    //    "net"
     "net/http"
-//    "strings"
+    //    "strings"
 )
+
+/*
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+func ListenAndServe(addr string, handler Handler) error
+*/
 
 type _TS_proxy struct {
     _TS_cfg _TS_cfg
@@ -21,6 +28,15 @@ type _TS_cfg struct {
     _IsAnonymous bool     // 高匿名模式
     _Debug       bool     // 调试模式
 }
+
+var _vHandle01 =  _TS_proxy{
+    _TS_cfg: _TS_cfg{
+        _Addr:        "",
+        _Port:        "22221",
+        _IsAnonymous: true,
+        _Debug:       false,
+    },
+};
 
 func main() {
 
@@ -41,7 +57,8 @@ func main() {
 }
 
 func _Run(___cfg1 *_TS_cfg) {
-    __pxy := _NewPxy()
+    //__pxy := _NewPxy()
+    __pxy := &_vHandle01 
     __pxy._SetPxyCfg(___cfg1)
     log.Printf("HttpPxoy is runing on %s:%s \n", ___cfg1._Addr, ___cfg1._Port)
     // http.Handle("/", __pxy)
@@ -79,7 +96,7 @@ func (___p1 *_TS_proxy) _SetPxyCfg(___cfg2 *_TS_cfg) {
 
 }
 
-// 运行代理服务
+// 运行代理服务 xxx
 func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Request) {
     // debug
     if ___p3._TS_cfg._Debug {
