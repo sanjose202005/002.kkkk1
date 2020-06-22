@@ -21,13 +21,14 @@ func _printInfo01(){
     for {
         time.Sleep(10 * time.Second)
         fmt.Println( 
-            "http" , 
+            "httpF" , 
             atomic . LoadUint64(&_vAccessHttpF ),
+            "httpS" , 
             atomic . LoadUint64(&_vAccessHttpS ),
             "          ",
-            "http" , 
-
+            "SslF" , 
             atomic . LoadUint64(&_vAccessSslF ),
+            "SslS" , 
             atomic . LoadUint64(&_vAccessSslS ),
             "\n",
         )

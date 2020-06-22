@@ -81,7 +81,7 @@ func main() {
     _vHandle02._vListen = _vHandle02._vTS_cfg._vAddr + ":" + _vHandle02._vTS_cfg._vPort
 
     _vHandle01._vTS_cfg._vHttps = false
-    _vHandle01._vTS_cfg._vHttps = true
+    _vHandle02._vTS_cfg._vHttps = true
 
     fmt.Println("_vHandle01", _vHandle01)
     fmt.Println("_vHandle02", _vHandle02)

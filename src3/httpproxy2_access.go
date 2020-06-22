@@ -36,7 +36,7 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
     }
 
     // http && https
-    if ___req3.Method != "CONNECT" {
+    if ___req3.Method != "CONNECT" { // http
         if ___p3._vTS_cfg._vHttps == true {
             atomic . AddUint64(&_vAccessHttpF , 1)
         } else {
@@ -51,8 +51,8 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
             atomic . AddUint64(&_vAccessSslS , 1)
             // 处理https
             // 直通模式不做任何中间处理
-        }
             ___p3._httpS_deal_with(___rw3, ___req3)
+        }
     }
 
 }
