@@ -26,12 +26,6 @@ func ListenAndServe(addr string, handler Handler) error
 type _TS_proxy struct {
     _vTS_cfg    _TS_cfg
     _vListen    string // exampel : 0.0.0.0:22220
-    _vAccessS   uint64 // access 01 : open method : http/https : succeed
-    _vAccessF   uint64 // access 01 : open method : http/https : falied
-    _vR01new    uint64
-    _vR02deal   uint64
-    _vW01new    uint64
-    _vW02deal   uint64
 }
 
 // 设置type
@@ -54,7 +48,11 @@ var _vHandle01 =  _TS_proxy{
 };
 
 var _vHandle02 =  _TS_proxy{}
-var _vUint6401  uint64
+
+var    _vAccessHttpS    uint64 // access 01 : open method : http  : succeed
+var    _vAccessHttpF    uint64 // access 01 : open method : http  : failed
+var    _vAccessSslS     uint64 // access 01 : open method : https : succeed
+var    _vAccessSslF     uint64 // access 01 : open method : https : falied
 
 var _vWait      sync.WaitGroup
 

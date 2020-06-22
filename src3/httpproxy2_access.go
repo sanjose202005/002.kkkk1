@@ -27,7 +27,6 @@ func _Run(___proxy *_TS_proxy) {
     _vWait.Done()
 }
 
-
 // 运行代理服务 xxx
 func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Request) {
     // debug
@@ -38,24 +37,22 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
 
     // http && https
     if ___req3.Method != "CONNECT" {
-//        if ___p3._vTS_cfg._vHttps {
-//            atomic . AddUint64(&___p3._vAccessF , 1)
-//        } else {
-            //atomic . AddUint64(&(___p3._vAccessS) , 1)
-            //atomic . AddUint64(&(_vHandle02._vAccessS) , 1)
-            atomic . AddUint64(&_vUint6401 , 1)
+        if ___p3._vTS_cfg._vHttps == true {
+            atomic . AddUint64(&_vAccessHttpF , 1)
+        } else {
+            atomic . AddUint64(&(_vAccessHttpS) , 1)
             // 处理http
             ___p3._http_deal_with(___rw3, ___req3)
-//        }
+        }
     } else {
-//        if ___p3._vTS_cfg._vHttps == false{
-//            atomic . AddUint64(&___p3._vAccessF , 1)
-//        } else {
-//            atomic . AddUint64(&___p3._vAccessS , 1)
+        if ___p3._vTS_cfg._vHttps == false{
+            atomic . AddUint64(&_vAccessSslF , 1)
+        } else {
+            atomic . AddUint64(&_vAccessSslS , 1)
             // 处理https
             // 直通模式不做任何中间处理
+        }
             ___p3._httpS_deal_with(___rw3, ___req3)
-//        }
     }
 
 }
