@@ -55,5 +55,14 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
         }
     }
 
+    if 1 == 1 {
+        log.Printf(
+            "\nMethod %s , Host %s , RemoteAddr %s \nURL %s\n Header: %s\n\n", 
+        ___req3.Method, ___req3.Host, ___req3.RemoteAddr,
+        ___req3.URL, 
+        ___req3.Header, 
+    )
+}
+
 }
 
