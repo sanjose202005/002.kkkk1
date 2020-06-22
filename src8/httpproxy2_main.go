@@ -8,6 +8,9 @@ import (
     //    "net"
     "net/http"
     //    "strings"
+    "fmt"
+    "strconv"
+    "os"
 )
 
 /*
@@ -18,7 +21,12 @@ func ListenAndServe(addr string, handler Handler) error
 */
 
 type _TS_proxy struct {
-    _vTS_cfg _TS_cfg
+    _vTS_cfg    _TS_cfg
+    _vListen    string // exampel : 0.0.0.0:22220
+    _vR01new    uint64
+    _vR02deal   uint64
+    _vW01new    uint64
+    _vW02deal   uint64
 }
 
 // 设置type
@@ -27,16 +35,20 @@ type _TS_cfg struct {
     _vPort        string   // 监听端口
     _vIsAnonymous bool     // 高匿名模式
     _vDebug       bool     // 调试模式
+    _vHttps       bool     // https mode -> true ; http mdoe -> false
 }
 
 var _vHandle01 =  _TS_proxy{
     _vTS_cfg: _TS_cfg{
-        _vAddr:        "",
+        _vAddr:        "0.0.0.0",
         _vPort:        "22221",
         _vIsAnonymous: true,
         _vDebug:       false,
+        _vHttps:       false,
     },
 };
+
+var _vHandle02 =  _TS_proxy{}
 
 func main() {
 
@@ -47,46 +59,38 @@ func main() {
     __fdebug :=  flag.Bool("debug",false,"调试模式显示更多信息，默认关闭")
     flag.Parse()
 
-    __cfg := &_TS_cfg{}
+    _vHandle01._vTS_cfg._vAddr = *__faddr
+    _vHandle01._vTS_cfg._vPort = *__fprot
+    _vHandle01._vTS_cfg._vIsAnonymous = *__fanonymous
+    _vHandle01._vTS_cfg._vDebug = *__fdebug
 
-    //_vHandle01 .
-    
-    __cfg._vAddr = *__faddr
-    __cfg._vPort = *__fprot
-    __cfg._vIsAnonymous = *__fanonymous
-    __cfg._vDebug = *__fdebug
-    // fmt.Println(__cfg)
-    
+    _vHandle02 = _vHandle01
 
-    _Run(__cfg)
+    __port , __err := strconv.Atoi( _vHandle01._vTS_cfg._vPort )
+    if __err != nil { fmt.Println(" error of port : " , _vHandle01._vTS_cfg._vPort ) ; os.Exit(3); }
+    __port += 10
+    _vHandle02._vTS_cfg._vPort = strconv.Itoa( __port )
+
+    _vHandle01._vListen = _vHandle01._vTS_cfg._vAddr + ":" + _vHandle01._vTS_cfg._vPort
+    _vHandle02._vListen = _vHandle02._vTS_cfg._vAddr + ":" + _vHandle02._vTS_cfg._vPort
+
+    fmt.Println("_vHandle01", _vHandle01)
+    fmt.Println("_vHandle02", _vHandle02)
+
+
+    _Run()
 }
 
-func _Run(___cfg1 *_TS_cfg) {
-    __pxy := &_vHandle01 
-    __pxy._SetPxyCfg(___cfg1)
-    log.Printf("HttpPxoy is runing on %s:%s \n", ___cfg1._vAddr, ___cfg1._vPort)
-    // http.Handle("/", __pxy)
-    __bindAddr := ___cfg1._vAddr + ":" + ___cfg1._vPort
-    log.Fatalln(http.ListenAndServe(__bindAddr, __pxy))
+//func _Run(___cfg1 *_TS_cfg) {
+func _Run() {
+
+    log.Printf("HttpPxoy is runing on %s:%s \n", _vHandle01._vTS_cfg._vAddr, _vHandle01._vTS_cfg._vPort)
+
+    __bindAddr := _vHandle01._vTS_cfg._vAddr + ":" + _vHandle01._vTS_cfg._vPort
+
+    log.Fatalln(http.ListenAndServe(__bindAddr, &_vHandle01 ))
 }
 
-
-// 配置参数
-func (___p1 *_TS_proxy) _SetPxyCfg(___cfg2 *_TS_cfg) {
-    if ___cfg2._vAddr != "" {
-        ___p1._vTS_cfg._vAddr = ___cfg2._vAddr
-    }
-    if ___cfg2._vPort != "" {
-        ___p1._vTS_cfg._vPort = ___cfg2._vPort
-    }
-    if ___cfg2._vIsAnonymous != ___p1._vTS_cfg._vIsAnonymous {
-        ___p1._vTS_cfg._vIsAnonymous = ___cfg2._vIsAnonymous
-    }
-    if ___cfg2._vDebug != ___p1._vTS_cfg._vDebug {
-        ___p1._vTS_cfg._vDebug = ___cfg2._vDebug
-    }
-
-}
 
 // 运行代理服务 xxx
 func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Request) {
