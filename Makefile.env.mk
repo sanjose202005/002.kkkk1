@@ -5,6 +5,7 @@ GoTOP:=\
 	httpproxy2_main
 
 httpproxy2_main := \
+	httpproxy2_info01 	\
 	httpproxy2_access 	\
 	httpproxy2_https    \
 	httpproxy2_httP    	\

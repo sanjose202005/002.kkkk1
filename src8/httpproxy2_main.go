@@ -80,12 +80,16 @@ func main() {
     _vHandle01._vListen = _vHandle01._vTS_cfg._vAddr + ":" + _vHandle01._vTS_cfg._vPort
     _vHandle02._vListen = _vHandle02._vTS_cfg._vAddr + ":" + _vHandle02._vTS_cfg._vPort
 
+    _vHandle01._vTS_cfg._vHttps = false
+    _vHandle01._vTS_cfg._vHttps = true
+
     fmt.Println("_vHandle01", _vHandle01)
     fmt.Println("_vHandle02", _vHandle02)
 
 
     _vWait.Add(1) ; go _Run( &_vHandle01 )
     _vWait.Add(1) ; go _Run( &_vHandle02 )
+    _vWait.Add(1) ; go _printInfo01()
 
     _vWait.Wait()
 }
