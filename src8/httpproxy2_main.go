@@ -12,6 +12,7 @@ import (
     "strconv"
     "os"
     "sync"
+    "time"
 )
 
 /*
@@ -81,17 +82,21 @@ func main() {
     fmt.Println("_vHandle02", _vHandle02)
 
 
-    _Run()
+    _vWait.Add(1) ; go _Run( &_vHandle01 )
+    _vWait.Add(1) ; go _Run( &_vHandle02 )
+
+    _vWait.Wait()
 }
 
-//func _Run(___cfg1 *_TS_cfg) {
-func _Run() {
+func _Run(___proxy *_TS_proxy) {
 
-    log.Printf("HttpPxoy is runing on %s:%s \n", _vHandle01._vTS_cfg._vAddr, _vHandle01._vTS_cfg._vPort)
+    time.Sleep(1 * time.Second)
+    fmt.Println(" wait until return 21 ", ___proxy )
 
-    __bindAddr := _vHandle01._vTS_cfg._vAddr + ":" + _vHandle01._vTS_cfg._vPort
+    log.Fatalln(http.ListenAndServe(___proxy._vListen ,  ___proxy ))
 
-    log.Fatalln(http.ListenAndServe(__bindAddr, &_vHandle01 ))
+    fmt.Println(" wait until return 25 ", ___proxy )
+    _vWait.Done()
 }
 
 
