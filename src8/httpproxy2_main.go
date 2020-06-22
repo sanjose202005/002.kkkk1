@@ -11,6 +11,7 @@ import (
     "fmt"
     "strconv"
     "os"
+    "sync"
 )
 
 /*
@@ -49,6 +50,8 @@ var _vHandle01 =  _TS_proxy{
 };
 
 var _vHandle02 =  _TS_proxy{}
+
+var _vWait      sync.WaitGroup
 
 func main() {
 
