@@ -18,9 +18,13 @@ import (
 
 
 func _printInfo01(){
+    var __cnt uint64 = 0
     for {
         time.Sleep(10 * time.Second)
         fmt.Println( 
+            "errorAgent" , 
+            atomic . LoadUint64(&_vAccessAgentE ),
+            "          ",
             "httpF" , 
             atomic . LoadUint64(&_vAccessHttpF ),
             "httpS" , 
@@ -30,8 +34,11 @@ func _printInfo01(){
             atomic . LoadUint64(&_vAccessSslF ),
             "SslS" , 
             atomic . LoadUint64(&_vAccessSslS ),
+            "          ",
+            __cnt,
             "\n",
         )
+        __cnt += 1
     }
     _vWait.Done()
 }

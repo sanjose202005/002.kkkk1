@@ -49,6 +49,7 @@ var _vHandle01 =  _TS_proxy{
 
 var _vHandle02 =  _TS_proxy{}
 
+var    _vAccessAgentE   uint64 // access agent error 
 var    _vAccessHttpS    uint64 // access 01 : open method : http  : succeed
 var    _vAccessHttpF    uint64 // access 01 : open method : http  : failed
 var    _vAccessSslS     uint64 // access 01 : open method : https : succeed

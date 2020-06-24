@@ -27,12 +27,39 @@ func _Run(___proxy *_TS_proxy) {
     _vWait.Done()
 }
 
+var _myAgent = map[string]bool{
+    "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0": true, // for my linux firefox
+    "Mozilla/5.0 (Android 10; Mobile; rv:68.0) Gecko/68.0 Firefox/68.0": true, // for my pixel # 10
+    "Mozilla/5.0 (Android 5.1.1; Mobile; rv:68.0) Gecko/68.0 Firefox/68.0": true, // for test01 in China
+}
+
 // 运行代理服务 xxx
 func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Request) {
     // debug
     if ___p3._vTS_cfg._vDebug {
         log.Printf("Received request %s %s %s\n", ___req3.Method, ___req3.Host, ___req3.RemoteAddr)
         // fmt.Println(___req3)
+    }
+
+    __vAgent := ___req3.UserAgent();
+
+    if 2 == 3 { // show  all agent
+        log.Printf(
+            "\n ok, 810182382 , len %d : agent [%s]\n\n",
+            len(__vAgent),
+            __vAgent,
+        )
+    }
+
+    if _ , __ok := _myAgent[__vAgent] ; !__ok {
+        log.Printf(
+            "\n different 810182381 found : Method %s , Host %s , RemoteAddr %s \nURL %s\n Header: %s\n\n",
+            ___req3.Method, ___req3.Host, ___req3.RemoteAddr,
+            ___req3.URL,
+            ___req3.Header,
+        )
+        atomic . AddUint64(&_vAccessAgentE , 1)
+        return;
     }
 
     // http && https
@@ -55,14 +82,6 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
         }
     }
 
-    if 1 == 1 {
-        log.Printf(
-            "\nMethod %s , Host %s , RemoteAddr %s \nURL %s\n Header: %s\n\n", 
-        ___req3.Method, ___req3.Host, ___req3.RemoteAddr,
-        ___req3.URL, 
-        ___req3.Header, 
-    )
-}
 
 }
 
