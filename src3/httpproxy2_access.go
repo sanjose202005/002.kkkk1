@@ -14,7 +14,9 @@ import (
     //"sync"
     "sync/atomic"
     "time"
-    "github.com/streamrail/concurrent-map"
+    //"github.com/streamrail/concurrent-map"
+    "github.com/orcaman/concurrent-map"
+    // https://pkg.go.dev/github.com/orcaman/concurrent-map?tab=doc
 )
 
 var _VipListOKmap  = cmap.New()
