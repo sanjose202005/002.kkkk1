@@ -5,7 +5,7 @@ import (
     //"flag"
     //    "io"
     "log"
-    //    "net"
+    "net"
     "net/http"
     //    "strings"
     "fmt"
@@ -55,7 +55,12 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
         )
     }
 
-    __vRemoteIP := ___req3 . RemoteAddr
+    __vRemoteIP , _, __err0:= net.SplitHostPort( ___req3 . RemoteAddr ) 
+    if nil != __err0 {
+        fmt.Println(" 8390184848 err met ", __err0 )
+        return
+    }
+    fmt.Println(" 8438181 get __vRemoteIP ", __vRemoteIP )
 
     if _ , __ok := _myAgent[__vAgent] ; !__ok {
         log.Printf(
@@ -67,7 +72,7 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
         atomic . AddUint64(&_vAccessAgentE , 1)
 
         if __agentIPcnt2 , __ok2 := _VipListErrmap.Get( __vRemoteIP ); __ok2 {
-            _VipListErrmap . Set( __vRemoteIP , __agentIPcnt2.(uint64) + 1 )
+            _VipListErrmap . Set( __vRemoteIP , __agentIPcnt2.(int) + 1 )
         } else {
             _VipListErrmap . Set( __vRemoteIP , 1 )
         }
@@ -76,7 +81,7 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
     }
 
     if __agentIPcnt3 , __ok3 := _VipListOKmap.Get( __vRemoteIP ); __ok3 {
-        _VipListOKmap . Set( __vRemoteIP , __agentIPcnt3.(uint64) + 1 )
+        _VipListOKmap . Set( __vRemoteIP , __agentIPcnt3.(int) + 1 )
     } else {
         _VipListOKmap . Set( __vRemoteIP , 1 )
     }

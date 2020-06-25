@@ -20,7 +20,7 @@ import (
 func _printInfo01(){
     var __cnt uint64 = 0
     var __VipListErrmapCnt int = 0 ;
-    var __VipListOKCnt int = 0 ;
+    var __VipListOkmapCnt int = 0 ;
     var __vPrintErrmap bool = false
 
     for {
@@ -52,19 +52,25 @@ func _printInfo01(){
             __vPrintErrmap = true
             __VipListErrmapCnt = _VipListErrmap.Count() 
         }
-        if _VipListOKmap.Count() != __VipListOKCnt {
+        if _VipListOKmap.Count() != __VipListOkmapCnt {
             __vPrintErrmap = true
-            __VipListOKCnt = _VipListOKmap.Count() 
+            __VipListOkmapCnt = _VipListOKmap.Count() 
         }
 
         __vPrintErrmap = true
-        if __vPrintErrmap && __VipListErrmapCnt != 0 {
-            fmt.Println( 
-                "_VipListErrmap : " ,
-                _VipListErrmap . Items() ,
-                "\n _VipListOKmap : " ,
-                _VipListOKmap . Items() ,
-            )
+        if __vPrintErrmap {
+            if __VipListErrmapCnt != 0 {
+                fmt.Println( 
+                    "_VipListErrmap : " ,
+                    _VipListErrmap . Items() ,
+                )
+            }
+            if __VipListOkmapCnt != 0 {
+                fmt.Println( 
+                    "_VipListOKmap : " ,
+                    _VipListOKmap . Items() ,
+                )
+            }
         }
     }
     _vWait.Done()
