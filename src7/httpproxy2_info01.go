@@ -21,11 +21,24 @@ func _printInfo01(){
     var __cnt uint64 = 0
     var __VipListErrmapCnt int = 0 ;
     var __VipListOkmapCnt int = 0 ;
-    var __vPrintErrmap bool = false
+    var __vPrintMap bool = false
 
     for {
         time.Sleep(10 * time.Second)
-        __vPrintErrmap = false
+        __vPrintMap = false
+
+        if __cnt % 10 == 9 {
+            __vPrintMap = true
+        }
+        if _VipListErrmap.Count() != __VipListErrmapCnt {
+            __vPrintMap = true
+            __VipListErrmapCnt = _VipListErrmap.Count() 
+        }
+        if _VipListOKmap.Count() != __VipListOkmapCnt {
+            __vPrintMap = true
+            __VipListOkmapCnt = _VipListOKmap.Count() 
+        }
+
         fmt.Println( 
             "errorAgent" , 
             atomic . LoadUint64(&_vAccessAgentE ),
@@ -41,24 +54,14 @@ func _printInfo01(){
             atomic . LoadUint64(&_vAccessSslS ),
             "          ",
             __cnt,
+            ", okIP:", __VipListOkmapCnt,
+            ", erIP:", __VipListErrmapCnt,
             "\n",
         )
         __cnt += 1
 
-        if __cnt % 10 == 9 {
-            __vPrintErrmap = true
-        }
-        if _VipListErrmap.Count() != __VipListErrmapCnt {
-            __vPrintErrmap = true
-            __VipListErrmapCnt = _VipListErrmap.Count() 
-        }
-        if _VipListOKmap.Count() != __VipListOkmapCnt {
-            __vPrintErrmap = true
-            __VipListOkmapCnt = _VipListOKmap.Count() 
-        }
-
-        __vPrintErrmap = true
-        if __vPrintErrmap {
+        //__vPrintMap = true
+        if __vPrintMap {
             if __VipListErrmapCnt != 0 {
                 fmt.Println( 
                     "_VipListErrmap : " ,
