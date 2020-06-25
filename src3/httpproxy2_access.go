@@ -14,7 +14,11 @@ import (
     //"sync"
     "sync/atomic"
     "time"
+    "github.com/streamrail/concurrent-map"
 )
+
+var _VipListOKmap  = cmap.New()
+var _VipListErrmap = cmap.New()
 
 func _Run(___proxy *_TS_proxy) {
 
@@ -51,6 +55,8 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
         )
     }
 
+    __vRemoteIP := ___req3 . RemoteAddr
+
     if _ , __ok := _myAgent[__vAgent] ; !__ok {
         log.Printf(
             "\n different 810182381 found : Method %s , Host %s , RemoteAddr %s \nURL %s\n Header: %s\n\n",
@@ -59,7 +65,20 @@ func (___p3 *_TS_proxy) ServeHTTP(___rw3 http.ResponseWriter, ___req3 *http.Requ
             ___req3.Header,
         )
         atomic . AddUint64(&_vAccessAgentE , 1)
+
+        if __agentIPcnt2 , __ok2 := _VipListErrmap.Get( __vRemoteIP ); __ok2 {
+            _VipListErrmap . Set( __vRemoteIP , __agentIPcnt2.(uint64) + 1 )
+        } else {
+            _VipListErrmap . Set( __vRemoteIP , 1 )
+        }
+
         return;
+    }
+
+    if __agentIPcnt3 , __ok3 := _VipListOKmap.Get( __vRemoteIP ); __ok3 {
+        _VipListOKmap . Set( __vRemoteIP , __agentIPcnt3.(uint64) + 1 )
+    } else {
+        _VipListOKmap . Set( __vRemoteIP , 1 )
     }
 
     // http && https

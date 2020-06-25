@@ -19,8 +19,13 @@ import (
 
 func _printInfo01(){
     var __cnt uint64 = 0
+    var __VipListErrmapCnt int = 0 ;
+    var __VipListOKCnt int = 0 ;
+    var __vPrintErrmap bool = false
+
     for {
         time.Sleep(10 * time.Second)
+        __vPrintErrmap = false
         fmt.Println( 
             "errorAgent" , 
             atomic . LoadUint64(&_vAccessAgentE ),
@@ -39,6 +44,28 @@ func _printInfo01(){
             "\n",
         )
         __cnt += 1
+
+        if __cnt % 10 == 9 {
+            __vPrintErrmap = true
+        }
+        if _VipListErrmap.Count() != __VipListErrmapCnt {
+            __vPrintErrmap = true
+            __VipListErrmapCnt = _VipListErrmap.Count() 
+        }
+        if _VipListOKmap.Count() != __VipListOKCnt {
+            __vPrintErrmap = true
+            __VipListOKCnt = _VipListOKmap.Count() 
+        }
+
+        __vPrintErrmap = true
+        if __vPrintErrmap && __VipListErrmapCnt != 0 {
+            fmt.Println( 
+                "_VipListErrmap : " ,
+                _VipListErrmap . Items() ,
+                "\n _VipListOKmap : " ,
+                _VipListOKmap . Items() ,
+            )
+        }
     }
     _vWait.Done()
 }
